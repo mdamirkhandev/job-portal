@@ -34,7 +34,8 @@
                             <div class="mb-3">
                                 <label for="" class="mb-2">Password*</label>
                                 <input type="password" name="password" id="password"
-                                    class="form-control @error('email') is-invalid @enderror" placeholder="Enter Password">
+                                    class="form-control @error('password') is-invalid @enderror"
+                                    placeholder="Enter Password">
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

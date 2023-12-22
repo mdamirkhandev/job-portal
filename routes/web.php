@@ -32,4 +32,6 @@ Route::group(['middleware' => 'guest'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
     Route::get('/profile', [AccountController::class, 'profile'])->name('account.profile');
+    Route::put('/update-profile', [AccountController::class, 'profileUpdate'])->name('account.profileUpdate');
+    Route::post('/profile-pic-update', [AccountController::class, 'profilePicUpdate'])->name('account.profilePicUpdate');
 });
