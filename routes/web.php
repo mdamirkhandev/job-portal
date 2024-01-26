@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\auth\AccountController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobController;
+use App\Http\Controllers\OpenJobController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/all-jobs', [OpenJobController::class, 'index'])->name('all.jobs');
+Route::get('/job-details/{id}', [OpenJobController::class, 'show'])->name('job.details');
 
 //Guest Middleware
 Route::group(['middleware' => 'guest'], function () {
@@ -34,4 +38,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile', [AccountController::class, 'profile'])->name('account.profile');
     Route::put('/update-profile', [AccountController::class, 'profileUpdate'])->name('account.profileUpdate');
     Route::post('/profile-pic-update', [AccountController::class, 'profilePicUpdate'])->name('account.profilePicUpdate');
+    //Jobs route
+    Route::resource('/jobs', JobController::class);
 });

@@ -144,7 +144,7 @@ class AccountController extends Controller
             $user->image = $imageName;
             $user->save();
 
-            session()->flash('success', 'Profile pic Uploaded');
+            session()->flash('success', 'Profile pic Updated Successfully !!');
 
             return response()->json([
                 'status' => true,

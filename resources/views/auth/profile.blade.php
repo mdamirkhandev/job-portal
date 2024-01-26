@@ -101,6 +101,7 @@
                             .removeClass('invalid-feedback')
                             .html('');
                         console.log('Profile updated successfully');
+                        location.reload();
                     } else {
                         // Handle validation errors
                         handleValidationErrors(data.errors, form);
