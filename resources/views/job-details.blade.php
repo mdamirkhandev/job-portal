@@ -17,6 +17,7 @@
         <div class="container job_details_area">
             <div class="row pb-5">
                 <div class="col-md-8">
+                    @include('message')
                     <div class="card shadow border-0">
                         <div class="job_details_header">
                             <div class="single_jobs white-bg d-flex justify-content-between">
@@ -45,38 +46,39 @@
                             </div>
                         </div>
                         <div class="descript_wrap white-bg">
-                            <div class="single_wrap">
-                                <h4>Job description</h4>
-                                <p>{{ $job->description }}</p>
-                            </div>
-                            <div class="single_wrap">
-                                <h4>Responsibility</h4>
-                                {{-- <ul>
-                                    <li>The applicants should have experience in the following areas.</li>
-                                    <li>Have sound knowledge of commercial activities.</li>
-                                    <li>Leadership, analytical, and problem-solving abilities.</li>
-                                    <li>Should have vast knowledge in IAS/ IFRS, Company Act, Income Tax, VAT.</li>
-                                </ul> --}}
-                                {{ $job->responsibility }}
-                            </div>
-                            <div class="single_wrap">
-                                <h4>Qualifications</h4>
-                                {{-- <ul>
-                                    <li>The applicants should have experience in the following areas.</li>
-                                    <li>Have sound knowledge of commercial activities.</li>
-                                    <li>Leadership, analytical, and problem-solving abilities.</li>
-                                    <li>Should have vast knowledge in IAS/ IFRS, Company Act, Income Tax, VAT.</li>
-                                </ul> --}}
-                                {{ $job->qualifications }}
-                            </div>
-                            <div class="single_wrap">
-                                <h4>Benefits</h4>
-                                <p>{{ $job->benefits }}</p>
-                            </div>
+                            @if (!empty($job->description))
+                                <div class="single_wrap">
+                                    <h4>Description</h4>
+                                    {{ $job->description }}
+                                </div>
+                            @endif
+                            @if (!empty($job->responsibility))
+                                <div class="single_wrap">
+                                    <h4>Responsibility</h4>
+                                    {{ $job->responsibility }}
+                                </div>
+                            @endif
+                            @if (!empty($job->qualifications))
+                                <div class="single_wrap">
+                                    <h4>Qualifications</h4>
+                                    {{ $job->qualifications }}
+                                </div>
+                            @endif
+                            @if (!empty($job->benefits))
+                                <div class="single_wrap">
+                                    <h4>Benefits</h4>
+                                    {{ $job->benefits }}
+                                </div>
+                            @endif
                             <div class="border-bottom"></div>
                             <div class="pt-3 text-end">
                                 <a href="#" class="btn btn-secondary">Save</a>
-                                <a href="#" class="btn btn-primary">Apply</a>
+                                @if (Auth::check())
+                                    <a href="#" onclick="applyJob({{ $job->id }})"
+                                        class="btn btn-primary">Apply</a>
+                                @else
+                                    <a href="{{ route('account.login') }}" class="btn btn-primary">Login to Apply</a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -91,9 +93,15 @@
                                 <ul>
                                     <li>Published on: <span>{{ $job->created_at->format('d M,Y') }}</span></li>
                                     <li>Vacancy: <span>{{ $job->vacancy }} Position</span></li>
-                                    <li>Salary: <span>{{ $job->salary }}/y</span></li>
-                                    <li>Location: <span>{{ $job->location }}</span></li>
-                                    <li>Job Nature: <span>{{ $job->jobType->name }}</span></li>
+                                    @if (!empty($job->salary))
+                                        <li>Salary: <span>{{ $job->salary }}/y</span></li>
+                                    @endif
+                                    @if (!empty($job->location))
+                                        <li>Location: <span>{{ $job->location }}</span></li>
+                                    @endif
+                                    @if (!empty($job->jobType->name))
+                                        <li>Job Nature: <span>{{ $job->jobType->name }}</span></li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -106,10 +114,12 @@
                             <div class="job_content pt-3">
                                 <ul>
                                     <li>Name: <span>{{ $job->company_name }}</span></li>
-                                    <li>Locaion: <span>{{ $job->company_location }}</span></li>
-                                    <li>Webite: <span><a
-                                                href="{{ $job->company_website }}">{{ $job->company_website }}</a></span>
-                                    </li>
+                                    @if (!empty($job->company_location))
+                                        <li>Locaion: <span>{{ $job->company_location }}</span></li>
+                                    @endif
+                                    @if (!empty($job->website))
+                                        <li>Website: <span>{{ $job->website }}</span></li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -118,4 +128,24 @@
             </div>
         </div>
     </section>
+    <script>
+        function applyJob(id) {
+            if (confirm("Are you sure to apply this Job ?")) {
+                $.ajax({
+                    url: "{{ route('apply.job') }}",
+                    type: "POST",
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        window.location.href = "{{ url()->current() }}"
+                    }
+                })
+            }
+        }
+    </script>
+@endsection
+
+@section('registerJs')
 @endsection

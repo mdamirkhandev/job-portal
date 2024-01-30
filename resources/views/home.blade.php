@@ -7,7 +7,8 @@
                 <div class="col-12 col-xl-8">
                     <h1>Find your dream job</h1>
                     <p>Thounsands of jobs available.</p>
-                    <div class="banner-btn mt-5"><a href="#" class="btn btn-primary mb-4 mb-sm-0">Explore Now</a>
+                    <div class="banner-btn mt-5"><a href="{{ route('all.jobs') }}" class="btn btn-primary mb-4 mb-sm-0">Explore
+                            Now</a>
                     </div>
                 </div>
             </div>
@@ -19,18 +20,19 @@
             <div class="card border-0 shadow p-5">
                 <div class="row">
                     <div class="col-md-3 mb-3 mb-sm-3 mb-lg-0">
-                        <input type="text" class="form-control" name="search" id="search" placeholder="Keywords">
+                        <input type="text" class="form-control" name="keywords" id="keywords" placeholder="Keywords">
                     </div>
                     <div class="col-md-3 mb-3 mb-sm-3 mb-lg-0">
-                        <input type="text" class="form-control" name="search" id="search" placeholder="Location">
                     </div>
+                    <input type="text" class="form-control" name="location" id="location" placeholder="Location">
                     <div class="col-md-3 mb-3 mb-sm-3 mb-lg-0">
                         <select name="category" id="category" class="form-control">
                             <option value="">Select a Category</option>
-                            <option value="">Engineering</option>
-                            <option value="">Accountant</option>
-                            <option value="">Information Technology</option>
-                            <option value="">Fashion designing</option>
+                            @if ($categories->isNotEmpty())
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
 
@@ -38,7 +40,6 @@
                         <div class="d-grid gap-2">
                             <a href="jobs.html" class="btn btn-primary btn-block">Search</a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -96,7 +97,8 @@
                                                     @endif
                                                 </div>
                                                 <div class="d-grid mt-3">
-                                                    <a href="job-detail.html" class="btn btn-primary btn-lg">Details</a>
+                                                    <a href="{{ route('job.details', $job->id) }}"
+                                                        class="btn btn-primary btn-lg">Details</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -141,7 +143,8 @@
                                                     @endif
                                                 </div>
                                                 <div class="d-grid mt-3">
-                                                    <a href="job-detail.html" class="btn btn-primary btn-lg">Details</a>
+                                                    <a href="{{ route('job.details', $job->id) }}"
+                                                        class="btn btn-primary btn-lg">Details</a>
                                                 </div>
                                             </div>
                                         </div>
