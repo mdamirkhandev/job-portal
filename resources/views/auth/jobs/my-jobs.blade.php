@@ -64,7 +64,8 @@
                                                                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                             </button>
                                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                                <li><a class="dropdown-item" href="job-detail.html"> <i
+                                                                <li><a class="dropdown-item"
+                                                                        href="{{ route('job.details', $job->id) }}"> <i
                                                                             class="fa fa-eye" aria-hidden="true"></i>
                                                                         View</a></li>
                                                                 <li><a class="dropdown-item"

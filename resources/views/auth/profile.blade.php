@@ -52,24 +52,32 @@
                     </form>
 
                     <div class="card border-0 shadow mb-4">
-                        <div class="card-body p-4">
-                            <h3 class="fs-4 mb-1">Change Password</h3>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">Old Password*</label>
-                                <input type="password" placeholder="Old Password" class="form-control">
+                        <form action="" method="post" name="updatePasswordForm" id="updatePasswordForm">
+                            <div class="card-body p-4">
+                                <h3 class="fs-4 mb-1">Change Password</h3>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">Old Password*</label>
+                                    <input type="password" name="old_password" id="old_password" placeholder="Old Password"
+                                        class="form-control">
+                                    <p></p>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">New Password*</label>
+                                    <input type="password" name="new_password" id="new_password" placeholder="New Password"
+                                        class="form-control">
+                                    <p></p>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">Confirm Password*</label>
+                                    <input type="password" name="confirm_password" id="confirm_password"
+                                        placeholder="Confirm Password" class="form-control">
+                                    <p></p>
+                                </div>
                             </div>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">New Password*</label>
-                                <input type="password" placeholder="New Password" class="form-control">
+                            <div class="card-footer  p-4">
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">Confirm Password*</label>
-                                <input type="password" placeholder="Confirm Password" class="form-control">
-                            </div>
-                        </div>
-                        <div class="card-footer  p-4">
-                            <button type="button" class="btn btn-primary">Update</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -113,6 +121,42 @@
                     // Handle the error as needed
                 }
             });
+        });
+
+        function handleValidationErrors(errors, form) {
+            // Clear previous validation errors
+            form.find('.is-invalid').removeClass('is-invalid');
+            form.find('.invalid-feedback').empty();
+
+            // Display new validation errors
+            $.each(errors, function(fieldName, errorMessage) {
+                var inputField = form.find('[name="' + fieldName + '"]');
+                var errorContainer = inputField.addClass('is-invalid').siblings('p').addClass('invalid-feedback')
+                    .html(errorMessage);
+            });
+        }
+
+        //update password by ajax
+        $('#updatePasswordForm').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var formData = form.serialize();
+            $.ajax({
+                type: 'post',
+                url: "{{ route('account.updatePassword') }}",
+                data: formData,
+                success: function(data) {
+                    if (data.status) {
+                        location.reload();
+                        // Remove validation error classes and messages
+                        $("#old_password, #new_password, #confirm_password").removeClass('is-invalid');
+                        console.log('Password updated successfully');
+                    } else {
+                        handleValidationErrors(data.errors, form);
+                        console.log('Validation errors:', data.errors);
+                    }
+                }
+            })
         });
 
         function handleValidationErrors(errors, form) {

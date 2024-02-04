@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\JobType;
 use App\Models\Category;
+use App\Models\JobApplication;
 use Illuminate\Http\Request;
 
 class OpenJobController extends Controller
@@ -47,10 +48,18 @@ class OpenJobController extends Controller
     //single job details
     public function show($id)
     {
-        $job = Job::where('status', 1)->findOrFail($id);
+        $job = Job::where([
+            'id' => $id,
+            'status' => 1
+        ])->with(['category', 'jobType'])->first();
+
         if ($job == null) {
             abort(404);
         }
-        return view('job-details', compact('job'));
+
+        //show applicants
+        $applicants = JobApplication::where('job_id', $id)->with('user')->get();
+        // dd($applicants);
+        return view('job-details', compact('job', 'applicants'));
     }
 }

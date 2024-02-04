@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile', [AccountController::class, 'profile'])->name('account.profile');
     Route::put('/update-profile', [AccountController::class, 'profileUpdate'])->name('account.profileUpdate');
     Route::post('/profile-pic-update', [AccountController::class, 'profilePicUpdate'])->name('account.profilePicUpdate');
+    Route::post('/updatePassword', [AccountController::class, 'updatePassword'])->name('account.updatePassword');
     //Jobs route
     Route::resource('/jobs', JobController::class);
     Route::get('/my-applied-jobs', [JobApplicationController::class, 'myAppliedJobs'])->name('my-applied-jobs');

@@ -10,6 +10,7 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="pinterest" content="nopin" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/ui/trumbowyg.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}" />
     <!-- Fav Icon -->
@@ -47,7 +48,11 @@
     <!-- Footer Section -->
     @include('layouts.footer')
     <!-- Include your scripts here -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/trumbowyg.min.js"></script>
+
     <script>
+        $('.textarea').trumbowyg();
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
