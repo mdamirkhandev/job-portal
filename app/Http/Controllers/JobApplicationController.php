@@ -18,7 +18,7 @@ class JobApplicationController extends Controller
         $job = Job::where('id', $id)->first();
         //if job not found in db
         if (!$job) {
-            session()->flash('error', 'Job not found');
+            flash()->addError('Job not found');
             return response()->json([
                 'status' => false,
                 'error' => 'Job not found'
@@ -29,7 +29,7 @@ class JobApplicationController extends Controller
         $employer_id = $job->user_id;
 
         if ($employer_id == auth()->user()->id) {
-            session()->flash('error', 'You can not apply for your own job');
+            flash()->addError('You can not apply for your own job');
             return response()->json([
                 'status' => false,
                 'error' => 'You can not apply for your own job'
@@ -41,7 +41,7 @@ class JobApplicationController extends Controller
             ->count();
 
         if ($jobApplication > 0) {
-            session()->flash('error', 'You already applied for this job');
+            flash()->addError('You already applied for this job');
             return response()->json([
                 'status' => false,
                 'error' => 'You already applied for this job'
@@ -67,7 +67,7 @@ class JobApplicationController extends Controller
         Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
         Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
 
-        session()->flash('success', 'Job applied successfully');
+        flash()->addSuccess('Job applied successfully');
 
         return response()->json([
             'status' => true,
@@ -82,7 +82,6 @@ class JobApplicationController extends Controller
             ->with('job.jobType')
             ->with('job.applications')
             ->paginate(5);
-        // dd($myAppliedJobs);
         return view('auth.jobs.my-applied-jobs', compact('myAppliedJobs'));
     }
 
@@ -92,7 +91,7 @@ class JobApplicationController extends Controller
             ->where('user_id', auth()->user()->id);
 
         if ($jobApplication == null) {
-            session()->flash('error', 'Job not found');
+            flash()->addError('Job not found');
             return response()->json([
                 'status' => false,
                 'error' => 'Job not found'
@@ -101,7 +100,7 @@ class JobApplicationController extends Controller
 
         JobApplication::find($request->id)->delete();
 
-        session()->flash('success', 'Job removed successfully');
+        flash()->addSuccess('Job removed successfully');
         return response()->json([
             'status' => true,
             'message' => 'Job removed successfully'

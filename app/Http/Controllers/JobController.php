@@ -66,7 +66,7 @@ class JobController extends Controller
             $job->company_website = $request->company_website;
             $job->save();
 
-            session()->flash('success', 'New Job added successfully !!');
+            flash()->addSuccess('New Job added successfully !!');
             return response()->json([
                 'status' => true,
                 'message' => 'New Job added successfully'
@@ -141,7 +141,7 @@ class JobController extends Controller
             $job->company_website = $request->company_website;
             $job->save();
 
-            session()->flash('success', 'Job Updated successfully !!');
+            flash()->addSuccess('Job Updated successfully !!');
             return response()->json([
                 'status' => true,
                 'message' => 'Job Updated successfully'
@@ -170,7 +170,7 @@ class JobController extends Controller
 
         $job->delete();
 
-        session()->flash('success', 'Job Deleted successfully !!');
+        flash()->addSuccess('Job Deleted successfully !!');
 
         return response()->json([
             'status' => true,

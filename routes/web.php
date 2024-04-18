@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\auth\AccountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobApplicationController;
@@ -46,4 +47,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/jobs', JobController::class);
     Route::get('/my-applied-jobs', [JobApplicationController::class, 'myAppliedJobs'])->name('my-applied-jobs');
     Route::delete('/my-applied-jobs', [JobApplicationController::class, 'removeJob'])->name('job.remove');
+    // Admin Route
+    Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    });
 });

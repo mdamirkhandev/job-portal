@@ -59,7 +59,7 @@ class AccountController extends Controller
             $user->password = Hash::make($request->password);
             $user->save();
 
-            session()->flash('success', 'Registration Success');
+            flash()->addSuccess('Registration Success');
 
             return response()->json([
                 'status' => true,
@@ -97,7 +97,7 @@ class AccountController extends Controller
             $user->phone = $request->phone;
             $user->save();
 
-            session()->flash('success', 'Profile Updated');
+            flash()->addSuccess('Profile Updated');
 
             return response()->json([
                 'status' => true,
@@ -144,7 +144,7 @@ class AccountController extends Controller
             $user->image = $imageName;
             $user->save();
 
-            session()->flash('success', 'Profile pic Updated Successfully !!');
+            flash()->addSuccess('Profile pic Updated Successfully !!');
 
             return response()->json([
                 'status' => true,
@@ -174,7 +174,7 @@ class AccountController extends Controller
             $user = User::find(Auth::user()->id);
             if (Hash::check($request->old_password, $user->password) === false) {
 
-                session()->flash('error', 'Old password not matched');
+                flash()->addError('Old password not matched');
                 return response()->json([
                     'status' => true,
                     'errors' => []
@@ -183,7 +183,7 @@ class AccountController extends Controller
                 $user->password = Hash::make($request->new_password);
                 $user->save();
 
-                session()->flash('success', 'Password Updated');
+                flash()->addSuccess('Password Updated');
                 return response()->json([
                     'status' => true,
                     'errors' => []
